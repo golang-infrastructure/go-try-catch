@@ -6,7 +6,7 @@
 
 当然这不是一个好的最佳实践，只是我们需要让业务能够正常跑起来更健壮以免隔三差五背锅，仅此而已！
 
-最后，切记：错误应该被尽早的暴露出来，而不是一味的掩盖！
+最后，切记：错误应该被尽早的暴露出来，而不是一味的掩盖！[]()
 
 # 二、安装
 
@@ -152,6 +152,15 @@ func Test(t *testing.T) {
 		fmt.Println("other")
 	}).Finally(func() {
 		fmt.Println("finally")
+	}).Do()
+
+	// 发生panic，尝试捕获错误，但是没有捕获得到，则异常会被向上抛出，即仍然会panic
+	try_catch.Try(func() {
+		panic(errors.New("test"))
+	}).Catch(errFoo, func(err error) {
+		fmt.Println("catch success")
+	}).Finally(func() {
+		fmt.Println("not catch finally")
 	}).Do()
 
 }

@@ -78,8 +78,15 @@ func (x *TryHandler) Do() {
 
 	// 如果前面的捕获不到则走这里的Default，没设置的话就是不需要捕获了
 	if !catchSuccess && x.bindingDefaultCatchHandler != nil {
+		catchSuccess = true
 		x.bindingDefaultCatchHandler.handle(err)
 	}
+
+	// 如果错误没有被捕获到的话，则继续向上抛出
+	if !catchSuccess {
+		panic(err)
+	}
+
 }
 
 // ------------------------------------------------ CatchHandler -------------------------------------------------------
