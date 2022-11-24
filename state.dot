@@ -1,0 +1,23 @@
+digraph G {
+    start -> TryHandler[label=Try];
+    TryHandler -> CatchHandler[label=Catch];
+    TryHandler -> FinallyHandler[label=Finally];
+    TryHandler -> DefaultCatchHandler[label=DefaultCatch];
+    TryHandler -> TryCatchElseHandler[label=Else];
+    TryHandler -> end[label=Do];
+
+    CatchHandler -> CatchHandler[label=Catch];
+    CatchHandler -> DefaultCatchHandler[label=DefaultCatch];
+    CatchHandler -> TryCatchElseHandler[label=Else];
+    CatchHandler -> FinallyHandler[label=Finally];
+    CatchHandler -> end[label=Do];
+
+    DefaultCatchHandler -> TryCatchElseHandler[label=Else];
+    DefaultCatchHandler -> FinallyHandler[label=Finally];
+    DefaultCatchHandler -> end[label=Do];
+
+    TryCatchElseHandler -> FinallyHandler[label=Finally];
+    TryCatchElseHandler -> end[label=Do];
+
+    FinallyHandler -> end[label=Do];
+}
