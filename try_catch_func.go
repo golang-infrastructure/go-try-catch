@@ -1,12 +1,33 @@
 package try_catch
 
+import (
+	"fmt"
+)
+
+type wrapError struct {
+	msg string
+	err error
+}
+
+func (e *wrapError) Error() string {
+	return e.msg
+}
+
+func (e *wrapError) Unwrap() error {
+	return e.err
+}
+
 // TryCatch 带捕获错误的执行函数
 func TryCatch(f func()) (err error) {
 
 	// 来个try-CatchHandler
 	defer func() {
 		if r := recover(); r != nil {
-			err = r.(error)
+			var ok bool
+			err, ok = r.(error)
+			if !ok {
+				err = fmt.Errorf("panic: %+v", r)
+			}
 		}
 	}()
 

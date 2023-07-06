@@ -2,6 +2,7 @@ package try_catch
 
 import (
 	"errors"
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -80,4 +81,12 @@ func TestTryCatchReturn3(t *testing.T) {
 	})
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, errFoo)
+}
+
+func TestTryCatchStringPanic(t *testing.T) {
+	Try(func() {
+		panic("string")
+	}).DefaultCatch(func(err error) {
+		fmt.Println(err)
+	}).Do()
 }

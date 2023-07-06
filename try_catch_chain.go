@@ -59,7 +59,7 @@ func (x *TryHandler) Do() {
 	// 执行函数，尝试捕获错误
 	err := TryCatch(x.handler)
 	if err == nil {
-		// 如果乜有捕获到，看下是否有设置else，设置了的话就调用下
+		// 如果没有捕获到，看下是否有设置else，设置了的话就调用下
 		if x.bindingTryCatchElseHandler != nil {
 			x.bindingTryCatchElseHandler.handle()
 		}
