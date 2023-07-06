@@ -6,6 +6,20 @@ import (
 
 // ------------------------------------------------- --------------------------------------------------------------------
 
+func IgnoreLastError2[V1 any](v1 V1, err error) V1 {
+	return v1
+}
+
+func IgnoreLastError3[V1, V2 any](v1 V1, v2 V2, err error) (V1, V2) {
+	return v1, v2
+}
+
+func IgnoreLastError4[V1, V2, V3 any](v1 V1, v2 V2, v3 V3, err error) (V1, V2, V3) {
+	return v1, v2, v3
+}
+
+// ------------------------------------------------- --------------------------------------------------------------------
+
 func toError(v any) error {
 	err, ok := v.(error)
 	if !ok {
