@@ -4,18 +4,17 @@ import (
 	"fmt"
 )
 
-type wrapError struct {
-	msg string
-	err error
+// ------------------------------------------------- --------------------------------------------------------------------
+
+func toError(v any) error {
+	err, ok := v.(error)
+	if !ok {
+		err = fmt.Errorf("panic: %+v", v)
+	}
+	return err
 }
 
-func (e *wrapError) Error() string {
-	return e.msg
-}
-
-func (e *wrapError) Unwrap() error {
-	return e.err
-}
+// ------------------------------------------------- --------------------------------------------------------------------
 
 // TryCatch 带捕获错误的执行函数
 func TryCatch(f func()) (err error) {
@@ -23,11 +22,7 @@ func TryCatch(f func()) (err error) {
 	// 来个try-CatchHandler
 	defer func() {
 		if r := recover(); r != nil {
-			var ok bool
-			err, ok = r.(error)
-			if !ok {
-				err = fmt.Errorf("panic: %+v", r)
-			}
+			err = toError(r)
 		}
 	}()
 
@@ -37,6 +32,11 @@ func TryCatch(f func()) (err error) {
 	return
 }
 
+// TryCatchIgnore 捕捉panic，但是忽略错误
+func TryCatchIgnore(f func()) {
+	_ = TryCatch(f)
+}
+
 // ------------------------------------------------ TryCatchReturn -----------------------------------------------------
 
 // TryCatchReturn 带捕获错误的执行返回结果的函数
@@ -44,7 +44,7 @@ func TryCatchReturn[R any](f func() R) (result R, err error) {
 	// 来个try-CatchHandler
 	defer func() {
 		if r := recover(); r != nil {
-			err = r.(error)
+			err = toError(r)
 		}
 	}()
 
@@ -58,7 +58,7 @@ func TryCatchReturn2[R1, R2 any](f func() (R1, R2)) (r1 R1, r2 R2, err error) {
 	// 来个try-CatchHandler
 	defer func() {
 		if r := recover(); r != nil {
-			err = r.(error)
+			err = toError(r)
 		}
 	}()
 
@@ -72,7 +72,7 @@ func TryCatchReturn3[R1, R2, R3 any](f func() (R1, R2, R3)) (r1 R1, r2 R2, r3 R3
 	// 来个try-CatchHandler
 	defer func() {
 		if r := recover(); r != nil {
-			err = r.(error)
+			err = toError(r)
 		}
 	}()
 
